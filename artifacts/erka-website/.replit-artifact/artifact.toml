@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ER-KA Kombi Klima"
+description = "A premium Turkish-language website for ER-KA Kombi Klima, presenting its heating, cooling, technical service, spare parts, and product offerings with direct contact and WhatsApp inquiry flows."
+version = "1.0.0"
+id = "artifacts/erka-website"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18730
+
+[services.development]
+run = "pnpm --filter @workspace/erka-website run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/erka-website", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/erka-website/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18730"
+BASE_PATH = "/"
