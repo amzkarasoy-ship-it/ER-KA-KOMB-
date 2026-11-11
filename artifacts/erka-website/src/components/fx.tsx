@@ -2,28 +2,39 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 
 export type Mode = 'heat' | 'cool';
 
-/* ---------- Steam rising (kombi) ---------- */
-export function Steam({ x = 50, y = 10, spread = 18, count = 12 }: { x?: number; y?: number; spread?: number; count?: number }) {
+/* ---------- Shared SVG turbulence filter (gives vapour its wispy shape) ---------- */
+export function FxDefs() {
+  return (
+    <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+      <defs>
+        <filter id="wisp" x="-50%" y="-50%" width="200%" height="200%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.011 0.028" numOctaves="3" seed="4" result="n">
+            <animate attributeName="baseFrequency" dur="14s" values="0.011 0.028;0.017 0.02;0.011 0.028" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="46" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+  );
+}
+
+/* ---------- Vapour rising (kombi) ---------- */
+export function Steam({ x = 50, y = 10, spread = 18, count = 6 }: { x?: number; y?: number; spread?: number; count?: number }) {
   return (
     <span className="fx fx-steam" aria-hidden="true" style={{ left: `${x}%`, top: `${y}%`, width: `${spread}%` } as CSSProperties}>
       {Array.from({ length: count }).map((_, i) => (
-        <i key={i} style={{ '--i': i, left: `${(i / (count - 1)) * 100}%`, animationDelay: `${(i * 0.37) % 2.6}s` } as CSSProperties} />
+        <i key={i} style={{ '--i': i, left: `${(i / (count - 1)) * 100}%`, animationDelay: `${-(i * 0.87) % 5.2}s` } as CSSProperties} />
       ))}
     </span>
   );
 }
 
-/* ---------- Cold air + snow (klima) ---------- */
-export function Chill({ x = 20, y = 40, w = 60, flakes = 10 }: { x?: number; y?: number; w?: number; flakes?: number }) {
+/* ---------- Cool air curtain (klima) ---------- */
+export function Chill({ x = 20, y = 40, w = 60, count = 7 }: { x?: number; y?: number; w?: number; count?: number }) {
   return (
     <span className="fx fx-chill" aria-hidden="true" style={{ left: `${x}%`, top: `${y}%`, width: `${w}%` } as CSSProperties}>
-      <svg viewBox="0 0 200 120" preserveAspectRatio="none">
-        {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-          <path key={i} d={`M${12 + i * 25} 0 C ${4 + i * 25} 40, ${28 + i * 25} 70, ${14 + i * 25} 118`} style={{ animationDelay: `${i * 0.22}s` }} />
-        ))}
-      </svg>
-      {Array.from({ length: flakes }).map((_, i) => (
-        <b key={i} style={{ left: `${(i * 37) % 100}%`, animationDelay: `${(i * 0.41) % 3}s`, fontSize: `${8 + ((i * 5) % 9)}px` }}>{'\u2744\uFE0E'}</b>
+      {Array.from({ length: count }).map((_, i) => (
+        <i key={i} style={{ '--i': i, left: `${8 + (i / (count - 1)) * 84}%`, animationDelay: `${-(i * 0.49) % 3.4}s` } as CSSProperties} />
       ))}
     </span>
   );

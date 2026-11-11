@@ -3,9 +3,10 @@ import {
   ArrowRight, ArrowUpRight, Check, ClipboardCheck, Clock, Flame, MapPin, Menu, MessageCircle, Navigation, Phone, PhoneCall, Search, Snowflake, Wrench, X,
 } from 'lucide-react';
 import {
-  Chill, Cursor, Particles, PipeFlow, Preloader, Scan, ScrollProgress, Steam, TiltCard, useReveal, type Mode,
+  Chill, Cursor, FxDefs, Particles, PipeFlow, Preloader, Scan, ScrollProgress, Steam, TiltCard, useReveal, type Mode,
 } from './components/fx';
 import Devices from './components/Devices';
+import Works from './components/Works';
 
 const PHONE = '+905319111769';
 const PHONE_LABEL = '0531 911 17 69';
@@ -29,8 +30,8 @@ function isOpenNow() {
 const navigation = [
   { label: 'Ana Sayfa', href: '#home' },
   { label: 'Hizmetler', href: '#services' },
+  { label: 'Referanslar', href: '#works' },
   { label: 'Ürünler', href: '#products' },
-  { label: 'Süreç', href: '#process' },
   { label: 'İletişim', href: '#contact' },
 ];
 
@@ -203,6 +204,7 @@ function App() {
 
   return (
     <div className={`site-shell mode-${mode}`}>
+      <FxDefs />
       <Preloader />
       <Cursor />
       <ScrollProgress />
@@ -284,6 +286,8 @@ function App() {
             </div>
           </div>
         </section>
+
+        <Works />
 
         {/* PROCESS */}
         <section className="process section-pad" id="process">
